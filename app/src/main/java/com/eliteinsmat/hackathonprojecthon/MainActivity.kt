@@ -30,6 +30,8 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
+import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("WrongConstant")
@@ -81,7 +83,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         //Start voice recognition
-        tts.startRecognition()
+        //ignore possible exception
+       try {
+            tts.startRecognition()
+        } catch (e:GooglePlatformSpeechToTextException){
+            tts.startRecognition()
+        }
 
         //shows query sent to dialogflow
         var list = tts.dialogApiEventsObservable()

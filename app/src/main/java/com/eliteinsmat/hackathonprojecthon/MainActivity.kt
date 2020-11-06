@@ -87,7 +87,12 @@ class MainActivity : AppCompatActivity() {
               { error -> println("Error: $error") },         // onError
               { println("Completed") }                       // onComplete
       )
-
+        var  list2 = tts.textToSpeechEventsObservable()
+        list2.subscribe(
+                { value -> println("Received2: $value") },      // onNext
+                { error -> println("Error2: $error") },         // onError
+                { println("Completed2") }                       // onComplete
+        )
 
 
 

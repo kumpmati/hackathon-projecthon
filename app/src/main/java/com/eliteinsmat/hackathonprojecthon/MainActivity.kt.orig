@@ -1,11 +1,23 @@
 package com.eliteinsmat.hackathonprojecthon
 
-import android.Manifest
-import android.content.Context
-import android.content.pm.PackageManager
+<<<<<<< HEAD
 import android.animation.AnimatorInflater
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+=======
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -16,22 +28,15 @@ import java.util.*
 import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.model.Speech
-import android.view.LayoutInflater
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+>>>>>>> master
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val tts = createAimybox(applicationContext);
+<<<<<<< HEAD
 
-//UI
+        // get reference to button
 
         //getting recyclerview from xml
         val recyclerView = findViewById(R.id.recycler) as RecyclerView
@@ -57,10 +62,16 @@ class MainActivity : AppCompatActivity() {
                 duration = 200
                 start();
             }
+
+
             recyclerView.adapter = adapter
         }
+    }
 
-//END OF UI
+
+}
+=======
+        val tts = createAimybox(applicationContext);
 
         //Permission check for recording audio
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -87,3 +98,4 @@ class MainActivity : AppCompatActivity() {
         return Aimybox(config)
     }
 }
+>>>>>>> master

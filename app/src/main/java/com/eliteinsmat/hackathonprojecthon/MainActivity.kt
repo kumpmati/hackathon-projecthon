@@ -3,8 +3,6 @@ package com.eliteinsmat.hackathonprojecthon
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,12 +13,9 @@ import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
 import java.util.*
 import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
-import com.justai.aimybox.model.Speech
-import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
+import android.widget.RelativeLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -35,6 +30,7 @@ class MainActivity : AppCompatActivity() {
 
         //getting recyclerview from xml
         val recyclerView = findViewById(R.id.recycler) as RecyclerView
+        val relativeView = findViewById(R.id.relativeLayout) as RelativeLayout
 
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
@@ -51,10 +47,28 @@ class MainActivity : AppCompatActivity() {
             restauraunts.add(Restaurant("reasds4"));
             restauraunts.add(Restaurant("res35"));
             restauraunts.add(Restaurant("res2333316"));
+            restauraunts.add(Restaurant("res1"));
+            restauraunts.add(Restaurant("resdsas2"));
+            restauraunts.add(Restaurant("res3213"));
+            restauraunts.add(Restaurant("reasds4"));
+            restauraunts.add(Restaurant("res35"));
+            restauraunts.add(Restaurant("res2333316"));
+            restauraunts.add(Restaurant("res1"));
+            restauraunts.add(Restaurant("resdsas2"));
+            restauraunts.add(Restaurant("res3213"));
+            restauraunts.add(Restaurant("reasds4"));
+            restauraunts.add(Restaurant("res35"));
+            restauraunts.add(Restaurant("res2333316"));
+            restauraunts.add(Restaurant("res1"));
+            restauraunts.add(Restaurant("resdsas2"));
+            restauraunts.add(Restaurant("res3213"));
+            restauraunts.add(Restaurant("reasds4"));
+            restauraunts.add(Restaurant("res35"));
+            restauraunts.add(Restaurant("res2333316"));
             val adapter = RestaurantAdapter(restauraunts)
 
-            ObjectAnimator.ofFloat(recyclerView, "translationY", 15f).apply {
-                duration = 200
+            ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
+                duration = 220
                 start();
             }
             recyclerView.adapter = adapter

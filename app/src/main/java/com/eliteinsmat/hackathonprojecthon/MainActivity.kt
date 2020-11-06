@@ -12,7 +12,17 @@ import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
 import java.util.*
 import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
+import com.justai.aimybox.extensions.dialogApiEventsObservable
+import com.justai.aimybox.extensions.speechToTextEventsObservable
+import com.justai.aimybox.extensions.textToSpeechEventsObservable
+import com.justai.aimybox.extensions.voiceTriggerEventsObservable
+import com.justai.aimybox.model.Response
 import com.justai.aimybox.model.Speech
+import com.justai.aimybox.model.TextSpeech
+import com.justai.aimybox.speechtotext.SpeechToText
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +41,17 @@ class MainActivity : AppCompatActivity() {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-        tts.startRecognition()
+      tts.startRecognition()
+      var list = tts.dialogApiEventsObservable()
+      list.subscribe(
+              { value -> println("Received: $value") },      // onNext
+              { error -> println("Error: $error") },         // onError
+              { println("Completed") }                       // onComplete
+      )
+
+
+
+
     }
     fun createAimybox(context: Context): Aimybox {
         val locale = Locale.getDefault()
@@ -41,7 +61,6 @@ class MainActivity : AppCompatActivity() {
         val dialogApi = DialogflowDialogApi(context, R.raw.b8584723b0bb, locale.language)
 
         val config = Config.create(speechToText, textToSpeech, dialogApi)
-
         return Aimybox(config)
     }
 }

@@ -25,7 +25,7 @@ dependencies {
     implementation("com.justai.aimybox:dialogflow-api:0.15.0")
     implementation("com.justai.aimybox:jaicf-api:0.15.0")
     implementation("com.justai.aimybox:google-platform-speechkit:0.15.0")
-
+    implementation "io.reactivex.rxjava3:rxjava:3.0.7"
 }
 
 allprojects {

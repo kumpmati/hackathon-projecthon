@@ -62,4 +62,5 @@ dependencies {
     implementation("com.justai.aimybox:dialogflow-api:0.15.0")
     implementation("com.justai.aimybox:jaicf-api:0.15.0")
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+    implementation 'io.reactivex.rxjava2:rxjava:2.2.8'
 }

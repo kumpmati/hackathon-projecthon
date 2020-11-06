@@ -45,4 +45,6 @@ dependencies {
     implementation("com.justai.aimybox:core:0.15.0")
     implementation("com.justai.aimybox:components:0.1.9")
     implementation("com.justai.aimybox:google-platform-speechkit:0.15.0")
+    implementation("com.justai.aimybox:core:${version}")
+    implementation("com.justai.aimybox:dialogflow-api:${version}")
 }

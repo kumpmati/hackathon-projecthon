@@ -85,5 +85,5 @@ lint/tmp/
 # lint/reports/
 
 # API token
-app/res/raw/*.json
+app/src/main/res/raw/*.json
 

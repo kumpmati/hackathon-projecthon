@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/restaurauntListing"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
+    app:cardBackgroundColor="?android:attr/colorBackground"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    app:contentPadding="20dp"
+    tools:layout_editor_absoluteX="10dp"
+    tools:layout_editor_absoluteY="10dp">
+
+    <TextView
+        android:id="@+id/restaurauntName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Restauraunt Name"
+        android:textSize="20dp"
+        android:visibility="visible" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="305dp"
+        android:layout_height="wrap_content"
+        android:text="5 km away"
+        android:translationX="0dp"
+        android:translationY="60dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton3"
+        android:layout_width="142dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:translationX="280dp"
+        android:translationY="10dp"
+        app:srcCompat="@drawable/ic_baseline_directions_24" />
+
+</androidx.cardview.widget.CardView>

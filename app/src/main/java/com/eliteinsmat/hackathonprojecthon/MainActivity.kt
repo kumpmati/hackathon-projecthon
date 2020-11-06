@@ -47,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
 
-
         val button: FloatingActionButton = findViewById(R.id.floatingActionButton)
         button.setOnClickListener {
             val restauraunts = ArrayList<Restaurant>()
@@ -80,23 +79,28 @@ class MainActivity : AppCompatActivity() {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-      tts.startRecognition()
-      var list = tts.dialogApiEventsObservable()
-      list.subscribe(
-              { value -> println("Received: $value") },      // onNext
-              { error -> println("Error: $error") },         // onError
-              { println("Completed") }                       // onComplete
-      )
-        var  list2 = tts.textToSpeechEventsObservable()
+
+        //Start voice recognition
+        tts.startRecognition()
+
+        //shows query sent to dialogflow
+        var list = tts.dialogApiEventsObservable()
+        list.subscribe(
+                { value -> println("Received: $value") },      // onNext
+                { error -> println("Error: $error") },         // onError
+                { println("Completed") }                       // onComplete
+        )
+
+        //dialogflow response
+        var list2 = tts.textToSpeechEventsObservable()
         list2.subscribe(
                 { value -> println("Received2: $value") },      // onNext
                 { error -> println("Error2: $error") },         // onError
                 { println("Completed2") }                       // onComplete
         )
-
-
-
     }
+
+    //create aimybox object for voice recognition
     fun createAimybox(context: Context): Aimybox {
         val locale = Locale.getDefault()
 

@@ -3,8 +3,6 @@ package com.eliteinsmat.hackathonprojecthon
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.animation.AnimatorInflater
-import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
@@ -17,19 +15,12 @@ import java.util.*
 import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.extensions.dialogApiEventsObservable
-import com.justai.aimybox.extensions.speechToTextEventsObservable
 import com.justai.aimybox.extensions.textToSpeechEventsObservable
-import com.justai.aimybox.extensions.voiceTriggerEventsObservable
-import com.justai.aimybox.model.Response
-import com.justai.aimybox.model.Speech
-import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.LinearLayout
-import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("WrongConstant")
@@ -45,7 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-
 
 
         val button: FloatingActionButton = findViewById(R.id.floatingActionButton)
@@ -80,23 +70,33 @@ class MainActivity : AppCompatActivity() {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
-      tts.startRecognition()
-      var list = tts.dialogApiEventsObservable()
-      list.subscribe(
-              { value -> println("Received: $value") },      // onNext
-              { error -> println("Error: $error") },         // onError
-              { println("Completed") }                       // onComplete
-      )
-        var  list2 = tts.textToSpeechEventsObservable()
+
+        //Start voice recognition
+        //ignore possible exception
+       try {
+            tts.startRecognition()
+        } catch (e:GooglePlatformSpeechToTextException){
+            tts.startRecognition()
+        }
+
+        //shows query sent to dialogflow
+        var list = tts.dialogApiEventsObservable()
+        list.subscribe(
+                { value -> println("Received: $value") },      // onNext
+                { error -> println("Error: $error") },         // onError
+                { println("Completed") }                       // onComplete
+        )
+
+        //dialogflow response
+        var list2 = tts.textToSpeechEventsObservable()
         list2.subscribe(
                 { value -> println("Received2: $value") },      // onNext
                 { error -> println("Error2: $error") },         // onError
                 { println("Completed2") }                       // onComplete
         )
-
-
-
     }
+
+    //create aimybox object for voice recognition
     fun createAimybox(context: Context): Aimybox {
         val locale = Locale.getDefault()
 

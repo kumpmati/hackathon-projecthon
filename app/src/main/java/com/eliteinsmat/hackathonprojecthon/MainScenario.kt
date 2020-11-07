@@ -18,6 +18,7 @@ object MainScenario: Scenario() {
         state("FoodType") {
             activators {
                 regex("chinese")
+                regex("indian")
                 regex("nearby")
             }
 

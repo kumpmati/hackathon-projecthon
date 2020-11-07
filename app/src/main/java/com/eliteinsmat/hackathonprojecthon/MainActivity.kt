@@ -35,6 +35,7 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     lateinit var fusedLocationClient: FusedLocationProviderClient
     lateinit var userLocation: LatLng
+    private var restaurants: ArrayList<Restaurant> = ArrayList()
 
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,17 +49,19 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-
-        MapsApi.getJuttuasd().subscribe({value ->
-            addMarkers(value)
-        }, { error -> println(error.message)})
 //UI
-
-
 
         //getting recyclerview from xml
         val recyclerView = findViewById(R.id.recycler) as RecyclerView
         val relativeView = findViewById(R.id.relativeLayout) as RelativeLayout
+
+        fun asd(value: ArrayList<Restaurant>) {
+            restaurants.addAll(value)
+            recyclerView.adapter = RestaurantAdapter(restaurants)
+        }
+
+        MapsApi.getJuttuasd().subscribe({value -> asd(value)
+        }, { error -> println(error.message)})
 
         //Permission check for recording audio
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
@@ -79,15 +82,15 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val button: FloatingActionButton = findViewById(R.id.floatingActionButton)
         button.setOnClickListener {
-            val restauraunts = ArrayList<Restaurant>()
-
+            /*
             restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563),1f, 2) );
             restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563),2f, 12));
             restauraunts.add(Restaurant("res3213",LatLng(60.2117671, 22.3342563),3f, 3));
             restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233),4f, 15));
             restauraunts.add(Restaurant("res35",LatLng(61.3217671, 22.2312563),4.5f, 91));
             restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563),5f, 7));
-            val adapter = RestaurantAdapter(restauraunts)
+            */
+            val adapter = RestaurantAdapter(restaurants)
 
             ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
                 duration = 220
@@ -103,10 +106,8 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             
             recyclerView.adapter = adapter
-            addMarkers(restauraunts)
+            addMarkers(restaurants)
         }
-
-
     }
 
 

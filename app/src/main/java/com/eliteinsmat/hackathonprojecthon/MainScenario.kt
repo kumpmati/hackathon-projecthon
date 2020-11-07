@@ -4,14 +4,11 @@ import com.justai.jaicf.model.scenario.Scenario
 
 object MainScenario: Scenario() {
     init {
-        state("hello") {
-            activators {
-                regex(".*hello*.")
-                regex(".*food*.")
-            }
 
+        state("hello") {
+            activators{regex(".*Hello.*"); regex(".* hi.*")}
             action {
-                reactions.sayRandom("What would you like to eat?")
+                reactions.say("Hello, What would you like to eat?")
             }
         }
 
@@ -38,6 +35,10 @@ object MainScenario: Scenario() {
         }
         state("NoKebab") { activators { regex(".*Don't.*Kebab*")}
             action {allowedTypes.remove("Kebab")
+                reactions.say("How about $allowedTypes") }
+        }
+        state("NoBurger") { activators { regex(".*Don't.*Burger")}
+            action {allowedTypes.remove("Hanmburger")
                 reactions.say("How about $allowedTypes") }
         }
 
@@ -72,11 +73,28 @@ object MainScenario: Scenario() {
                 reactions.say("Here are some Indian restaurants")
             }
         }
+        state("Burger") { activators { regex(".*Burger.*") }
+            action {
+                MapsApi().query("Burger")
+                reactions.say("Here are some Burger restaurants")
+            }
+        }
         state("coffee") { activators { regex(".*Coffee.*")}
             action {
                 MapsApi().query("Coffee")
                 reactions.say("Here are some coffee shops") }
         }
+
+        state("What"){activators { regex(".*What.*")
+            action { reactions.say("I have $allRestaurants restaurants") }}}
+
+        //Ansver yes to fallback
+        state("Yes"){activators { regex(".*Yes.*")
+        action { reactions.say("What would you like?") }}}
+
+        state("Who"){activators { regex(".*Who.*")
+            action { reactions.say("I am a conversational AI made for junction 2020 just AI and aito challenges. My primary function is to find places to eat") }}}
+
 
         //Accept
         state("Ok") { activators { regex(".*OK.*")}
@@ -85,6 +103,6 @@ object MainScenario: Scenario() {
                 allowedTypes.addAll(allRestaurants)
                 reactions.say("Thank you") }
         }
-        fallback { reactions.say("Sorry I didn't get that")}
+        fallback { reactions.say("Sorry I didn't get that, Would you like something to eat?")}
     }
 }

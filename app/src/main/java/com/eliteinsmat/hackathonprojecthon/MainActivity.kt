@@ -23,6 +23,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.justai.aimybox.Aimybox
 import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
+import com.justai.aimybox.dialogapi.jaicf.JAICFDialogApi
 import com.justai.aimybox.extensions.dialogApiEventsObservable
 import com.justai.aimybox.extensions.textToSpeechEventsObservable
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
@@ -139,10 +140,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     //create aimybox object for voice recognition
     private fun createAimybox(context: Context): Aimybox {
         val locale = Locale.ENGLISH
+        val unitId = UUID.randomUUID().toString()
 
         val textToSpeech = GooglePlatformTextToSpeech(context, locale) // Or any other TTS
         val speechToText = GooglePlatformSpeechToText(context, locale) // Or any other ASR
-        val dialogApi = DialogflowDialogApi(context, R.raw.b8584723b0bb, locale.language)
+        val dialogApi = JAICFDialogApi(unitId, MainScenario.model)
 
         val config = Config.create(speechToText, textToSpeech, dialogApi)
 

@@ -22,9 +22,12 @@ object MainScenario: Scenario() {
             action {allowedTypes.remove("Chinese")
                 reactions.say("How about $allowedTypes") }
         }
-
         state("NoIndian") { activators { regex(".*Don't.*Indian.*")}
             action {allowedTypes.remove("Indian")
+                reactions.say("How about $allowedTypes") }
+        }
+        state("NoSushi") { activators { regex(".*Don't.*Sushi*")}
+            action {allowedTypes.remove("Japanese")
                 reactions.say("How about $allowedTypes") }
         }
 
@@ -51,7 +54,7 @@ object MainScenario: Scenario() {
         state("Ok") { activators { regex(".*OK.*")}
             action {allowedTypes.clear()
                 allowedTypes.addAll(allRestaurants)
-                reactions.say("Fresh") }
+                reactions.say("Thank you") }
         }
     }
 }

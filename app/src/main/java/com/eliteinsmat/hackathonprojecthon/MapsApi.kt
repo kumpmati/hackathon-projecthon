@@ -28,7 +28,7 @@ class MapsApi {
      */
     fun query(keyword: String): ArrayList<Restaurant> {
         val mapper = jacksonObjectMapper()
-        val queryURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.latitude},${location.longitude}&radius=500&type=restaurant&keyword=${keyword}&key=AIzaSyCOx9CdJs-7V0LEoiFBpwuukHGu2UsdLYo"
+        val queryURL = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location.latitude},${location.longitude}&radius=5000&type=restaurant&keyword=${keyword}&key=AIzaSyCOx9CdJs-7V0LEoiFBpwuukHGu2UsdLYo"
         val rawResult = URL(queryURL).readText()
         val rootNode: JsonNode = mapper.readTree(rawResult)
         val results: JsonNode = rootNode.get("results")

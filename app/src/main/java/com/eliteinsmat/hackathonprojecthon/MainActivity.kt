@@ -24,6 +24,7 @@ import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.extensions.dialogApiEventsObservable
 import com.justai.aimybox.extensions.textToSpeechEventsObservable
+import com.justai.aimybox.model.TextSpeech
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech

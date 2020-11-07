@@ -15,6 +15,19 @@ object MainScenario: Scenario() {
             }
         }
 
+        val allRestaurants = arrayListOf<String>("Japanese", "Indian", "Hamburger","Chinese")
+        var allowedTypes = arrayListOf<String>("Japanese", "Indian", "Hamburger","Chinese")
+
+        state("NoChinese") { activators { regex(".*Don't.*Chinese.*")}
+            action {allowedTypes.remove("Chinese")
+                reactions.say("How about $allowedTypes") }
+        }
+
+        state("NoIndian") { activators { regex(".*Don't.*Indian.*")}
+            action {allowedTypes.remove("Indian")
+                reactions.say("How about $allowedTypes") }
+        }
+
         state("Chinese") { activators { regex(".*Chinese.*")}
             action { reactions.say("Here are some chinese restaurants") }
         }
@@ -27,12 +40,18 @@ object MainScenario: Scenario() {
             action { reactions.say("Here are some indian restaurants") }
         }
 
-        state("Japanese") { activators { regex(".*Sushi.*")}
+        state("Japanese") { activators { regex(".*Japanese.*")}
             action { reactions.say("Here are some sushi restaurants") }
         }
 
         state("coffee") { activators { regex(".*Coffee.*")}
             action { reactions.say("Here are some coffee shops") }
+        }
+
+        state("Ok") { activators { regex(".*OK.*")}
+            action {allowedTypes.clear()
+                allowedTypes.addAll(allRestaurants)
+                reactions.say("Fresh") }
         }
     }
 }

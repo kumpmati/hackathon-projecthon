@@ -37,6 +37,10 @@ object MainScenario: Scenario() {
             action {allowedTypes.remove("Kebab")
                 reactions.say("How about $allowedTypes") }
         }
+        state("NoBurger") { activators { regex(".*Don't.*Burger")}
+            action {allowedTypes.remove("Hanmburger")
+                reactions.say("How about $allowedTypes") }
+        }
 
         //Choose types
         state("Chinese") { activators { regex(".*Chinese.*") }
@@ -67,6 +71,12 @@ object MainScenario: Scenario() {
             action {
                 MapsApi().query("Indian")
                 reactions.say("Here are some Indian restaurants")
+            }
+        }
+        state("Burger") { activators { regex(".*Burger.*") }
+            action {
+                MapsApi().query("Burger")
+                reactions.say("Here are some Burger restaurants")
             }
         }
         state("coffee") { activators { regex(".*Coffee.*")}

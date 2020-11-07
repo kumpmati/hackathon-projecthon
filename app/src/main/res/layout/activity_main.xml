@@ -67,45 +67,5 @@
             app:srcCompat="@drawable/mic" />
     </RelativeLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:visibility="gone">
-
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/restaurauntListing"
-                android:layout_width="match_parent"
-                android:layout_height="120dp"
-                android:layout_marginHorizontal="10dp"
-                android:layout_marginVertical="10dp"
-                app:cardBackgroundColor="?android:attr/colorBackground"
-                app:cardCornerRadius="2dp"
-                app:cardElevation="4dp"
-                app:contentPadding="20dp">
-
-                <TextView
-                    android:id="@+id/restaurauntName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Restauraunt Name"
-                    android:textSize="20dp"
-                    android:visibility="visible"
-                    tools:text="Restauraunt Name"
-                    tools:visibility="visible" />
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </ScrollView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

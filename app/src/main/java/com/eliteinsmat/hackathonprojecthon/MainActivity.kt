@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //create aimybox object for voice recognition
     fun createAimybox(context: Context): Aimybox {
-        val locale = Locale.getDefault()
+        val locale = Locale.ENGLISH
 
         val textToSpeech = GooglePlatformTextToSpeech(context, locale) // Or any other TTS
         val speechToText = GooglePlatformSpeechToText(context, locale) // Or any other ASR

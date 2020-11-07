@@ -7,7 +7,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.os.Looper
+import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -36,10 +37,10 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userLocation: LatLng
-    private var restaurants: ArrayList<Restaurant> = ArrayList()
-    var ttsButtonState: Boolean = false;
+    var ttsButtonState: Boolean = false
+    private val restaurants = ArrayList<Restaurant>();
 
-    @SuppressLint("WrongConstant")
+    @SuppressLint("WrongConstant", "CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -63,15 +64,20 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val recyclerView = findViewById(R.id.recycler) as RecyclerView
         val relativeView = findViewById(R.id.relativeLayout) as RelativeLayout
 
-        fun updateRestaurants(value: ArrayList<Restaurant>) {
-            restaurants.addAll(value)
-            recyclerView.adapter = RestaurantAdapter(restaurants)
-        }
 
-        val a = MapsApi.getJuttuasd().subscribe(
-            {value -> updateRestaurants(value)},
-            {error -> println(error)}
-        )
+
+
+        fun updateRestaurants(value: ArrayList<Restaurant>){
+            this@MainActivity.runOnUiThread(java.lang.Runnable {
+                restaurants.clear()
+                restaurants.addAll(value)
+
+                val adapter = RestaurantAdapter(restaurants)
+                recyclerView.adapter = adapter
+                addMarkers(restaurants)
+                recyclerView.invalidate();
+            })
+        }
 
         //Permission check for recording audio
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -92,14 +98,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
         val button: FloatingActionButton = findViewById(R.id.ttsButton)
+
+        val a = MapsApi.getJuttuasd().subscribe(
+            {value -> updateRestaurants(value)
+            },
+            {error -> println(error)}
+        )
+
         button.setOnClickListener {
+
             if (ttsButtonState){
                 println("STUNTTI SEIS")
                 //todo: cancel tts here
             } else {
-                val restauraunts = ArrayList<Restaurant>()
-                val adapter = RestaurantAdapter(restauraunts)
-
                 ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
                     duration = 220
                     start();
@@ -117,13 +128,11 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                             setButtonState(true)
                         } else {
                             setButtonState(false)
+
                         }
                     },
                     { error -> println("Error: $error") }        // onError
                 )
-
-                recyclerView.adapter = adapter
-                addMarkers(restauraunts)
             }
         }
     }

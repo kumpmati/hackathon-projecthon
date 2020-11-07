@@ -59,7 +59,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
                 MapsApi.setNewLocation(userLocation)
             }
-        GPSUtils(this).turnOnGPS()
 //UI
 
         //getting recyclerview from xml
@@ -85,11 +84,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 recyclerView.invalidate();
 
                 ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
-                    duration = 220
+                    duration = 3
+                    20
                     start();
                 }
             })
         }
+
+        val b = RestaurantAdapter.ViewHolder.getRestaurantBS().subscribe(
+            {value ->
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(value, 15f))
+            },
+            {error -> println(error)}
+        );
 
         //Permission check for recording audio
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

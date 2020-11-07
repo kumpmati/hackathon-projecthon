@@ -9,15 +9,22 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import io.reactivex.subjects.BehaviorSubject
 
 /**
  * Created by Belal on 6/19/2017.
  */
 
 class RestaurantAdapter(val RestaurantList: ArrayList<Restaurant>) : RecyclerView.Adapter<RestaurantAdapter.ViewHolder>() {
+
+
 
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantAdapter.ViewHolder {
@@ -48,6 +55,14 @@ class RestaurantAdapter(val RestaurantList: ArrayList<Restaurant>) : RecyclerVie
     //the class is hodling the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        companion object {
+            private var restaurantBS: BehaviorSubject<LatLng> = BehaviorSubject.create()
+
+            fun getRestaurantBS(): BehaviorSubject<LatLng> {
+                return restaurantBS
+            }
+        }
+
 
 
         fun bindItems(restaurant: Restaurant) {
@@ -70,6 +85,10 @@ class RestaurantAdapter(val RestaurantList: ArrayList<Restaurant>) : RecyclerVie
                 b.putBoolean("new_window", true)
                 intents.putExtras(b)
                 itemView.context.startActivity(intents)
+            }
+            val listing = itemView.findViewById(R.id.restaurauntListing) as CardView
+            listing.setOnClickListener {
+                restaurantBS.onNext(restaurant.location)
             }
         }
     }

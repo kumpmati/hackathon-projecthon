@@ -24,6 +24,7 @@ import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.extensions.dialogApiEventsObservable
 import com.justai.aimybox.extensions.textToSpeechEventsObservable
+import com.justai.aimybox.model.TextSpeech
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
@@ -59,6 +60,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO),1)
             return
         }
 
@@ -104,7 +106,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //dialogflow response
             var list2 = tts.textToSpeechEventsObservable()
             list2.subscribe(
-                { value -> println("Received2: $value") },      // onNext
+                { value -> parseDate(value.toString()) },      // onNext
                 { error -> println("Error2: $error") },         // onError
                 { println("Completed2") }                       // onComplete
             )
@@ -115,8 +117,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
+    //TODO tähän se parse funktio
+    private fun parseDate(data:String){
+        println("Parsetaan: "+data)
+    }
+
     //create aimybox object for voice recognition
-    fun createAimybox(context: Context): Aimybox {
+    private fun createAimybox(context: Context): Aimybox {
         val locale = Locale.ENGLISH
 
         val textToSpeech = GooglePlatformTextToSpeech(context, locale) // Or any other TTS

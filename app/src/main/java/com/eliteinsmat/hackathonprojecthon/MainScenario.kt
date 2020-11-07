@@ -6,8 +6,8 @@ object MainScenario: Scenario() {
     init {
         state("hello") {
             activators {
-                regex("hello")
-                regex("food")
+                regex(".*hello*.")
+                regex(".*food*.")
             }
 
             action {
@@ -15,9 +15,11 @@ object MainScenario: Scenario() {
             }
         }
 
-        val allRestaurants = arrayListOf<String>("Japanese", "Indian", "Hamburger","Chinese")
-        var allowedTypes = arrayListOf<String>("Japanese", "Indian", "Hamburger","Chinese")
+        //Food type lists
+        val allRestaurants = arrayListOf<String>("Sushi", "Indian", "Hamburger","Chinese", "Pizza", "Kebab")
+        var allowedTypes = arrayListOf<String>("Sushi", "Indian", "Hamburger","Chinese", "Pizza", "Kebab")
 
+        //Exclude types
         state("NoChinese") { activators { regex(".*Don't.*Chinese.*")}
             action {allowedTypes.remove("Chinese")
                 reactions.say("How about $allowedTypes") }
@@ -27,31 +29,62 @@ object MainScenario: Scenario() {
                 reactions.say("How about $allowedTypes") }
         }
         state("NoSushi") { activators { regex(".*Don't.*Sushi*")}
-            action {allowedTypes.remove("Japanese")
+            action {allowedTypes.remove("Sushi")
+                reactions.say("How about $allowedTypes") }
+        }
+        state("NoPizza") { activators { regex(".*Don't.*Pizza*")}
+            action {allowedTypes.remove("Pizza")
+                reactions.say("How about $allowedTypes") }
+        }
+        state("NoKebab") { activators { regex(".*Don't.*Kebab*")}
+            action {allowedTypes.remove("Kebab")
                 reactions.say("How about $allowedTypes") }
         }
 
-        state("Chinese") { activators {
-            regex(".*Chinese.*")
-            regex(".*Burger.*")
-            regex(".*Indian.*")
-            regex(".*Japanese.*")
-        }
+        //Choose types
+        state("Chinese") { activators { regex(".*Chinese.*") }
             action {
-                MapsApi().query(this.request.input)
-                reactions.say("Here are some ${this.request.input} restaurants")
+                MapsApi().query("Chinese")
+                reactions.say("Here are some Chinese restaurants")
             }
         }
-
+        state("Sushi") { activators { regex(".*Sushi.*") }
+            action {
+                MapsApi().query("Sushi")
+                reactions.say("Here are some Sushi restaurants")
+            }
+        }
+        state("Kebab") { activators { regex(".*Kebab.*") }
+            action {
+                MapsApi().query("Kebab")
+                reactions.say("Here are some Kebab restaurants")
+            }
+        }
+        state("Pizza") { activators { regex(".*Pizza.*") }
+            action {
+                MapsApi().query("Pizza")
+                reactions.say("Here are some Pizza restaurants")
+            }
+        }
+        state("Indian") { activators { regex(".*Indian.*") }
+            action {
+                MapsApi().query("Indian")
+                reactions.say("Here are some Indian restaurants")
+            }
+        }
         state("coffee") { activators { regex(".*Coffee.*")}
-            action { reactions.say("Here are some coffee shops") }
+            action {
+                MapsApi().query("Coffee")
+                reactions.say("Here are some coffee shops") }
         }
 
+        //Accept
         state("Ok") { activators { regex(".*OK.*")}
             action {allowedTypes.clear()
-                MapsApi().query(this.request.input)
+                //MapsApi().query(this.request.input)
                 allowedTypes.addAll(allRestaurants)
                 reactions.say("Thank you") }
         }
+        fallback { reactions.say("Sorry I didn't get that")}
     }
 }

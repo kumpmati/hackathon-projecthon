@@ -51,6 +51,7 @@ object MainScenario: Scenario() {
         state("Ok") { activators { regex(".*OK.*")}
             action {allowedTypes.clear()
                 allowedTypes.addAll(allRestaurants)
+
                 reactions.say("Fresh") }
         }
     }

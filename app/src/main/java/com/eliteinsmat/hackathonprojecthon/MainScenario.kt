@@ -87,9 +87,14 @@ object MainScenario: Scenario() {
 
         state("What"){activators { regex(".*What.*")
             action { reactions.say("I have $allRestaurants restaurants") }}}
+
         //Ansver yes to fallback
         state("Yes"){activators { regex(".*Yes.*")
         action { reactions.say("What would you like?") }}}
+
+        state("Who"){activators { regex(".*Who.*")
+            action { reactions.say("I am a conversational AI made for junction 2020 just AI and aito challenges. My primary function is to find places to eat") }}}
+
 
         //Accept
         state("Ok") { activators { regex(".*OK.*")}

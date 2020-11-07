@@ -109,8 +109,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
             if (ttsButtonState){
                 println("STUNTTI SEIS")
-                //todo: cancel tts here
+                tts.mute()
             } else {
+                tts.unmute()
                 ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
                     duration = 220
                     start();

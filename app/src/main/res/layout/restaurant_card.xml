@@ -19,26 +19,41 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/distance"
             android:layout_width="305dp"
             android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="0dp"
             android:text="5 km away"
             android:translationX="0dp"
             android:translationY="60dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton3"
+            android:id="@+id/dirButton"
             android:layout_width="142dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentTop="false"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentBottom="false"
+            android:layout_centerVertical="true"
             android:layout_gravity="end"
-            android:layout_marginTop="14dp"
-            android:layout_marginEnd="9dp"
-            android:layout_marginBottom="13dp"
+            android:layout_marginRight="5dp"
             android:clickable="true"
             app:srcCompat="@drawable/ic_baseline_directions_24" />
+
+        <RatingBar
+            android:id="@+id/rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="-78dp"
+            android:layout_marginTop="10dp"
+            android:rating="2"
+            android:scaleX=".35"
+            android:scaleY=".35" />
     </RelativeLayout>
 
     <TextView

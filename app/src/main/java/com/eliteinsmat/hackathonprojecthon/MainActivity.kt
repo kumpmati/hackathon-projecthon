@@ -72,12 +72,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         button.setOnClickListener {
             val restauraunts = ArrayList<Restaurant>()
 
-            restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563)));
-            restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563)));
-            restauraunts.add(Restaurant("res3213",LatLng(60.2117671, 22.3342563)));
-            restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233)));
-            restauraunts.add(Restaurant("res35",LatLng(61.3217671, 22.2312563)));
-            restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563)));
+            restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563),1f, 2) );
+            restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563),2f, 12));
+            restauraunts.add(Restaurant("res3213",LatLng(60.2117671, 22.3342563),3f, 3));
+            restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233),4f, 15));
+            restauraunts.add(Restaurant("res35",LatLng(61.3217671, 22.2312563),4.5f, 91));
+            restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563),5f, 7));
             val adapter = RestaurantAdapter(restauraunts)
 
             ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
@@ -110,10 +110,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             )
             
             recyclerView.adapter = adapter
-            addMarkers(restauraunts);
         }
-
-//END OF UI
 
 
     }

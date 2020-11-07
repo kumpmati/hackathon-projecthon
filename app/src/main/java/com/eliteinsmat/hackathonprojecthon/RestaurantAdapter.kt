@@ -1,10 +1,17 @@
 package com.eliteinsmat.hackathonprojecthon
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 /**
  * Created by Belal on 6/19/2017.
@@ -15,6 +22,7 @@ class RestaurantAdapter(val RestaurantList: ArrayList<Restaurant>) : RecyclerVie
     //this method is returning the view for each item in the list
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.restaurant_card, parent, false)
+
         return ViewHolder(v)
     }
 
@@ -28,12 +36,41 @@ class RestaurantAdapter(val RestaurantList: ArrayList<Restaurant>) : RecyclerVie
         return RestaurantList.size
     }
 
+    fun openNewTabWindow(urls: String, context : Context) {
+        val uris = Uri.parse(urls)
+        val intents = Intent(Intent.ACTION_VIEW, uris)
+        val b = Bundle()
+        b.putBoolean("new_window", true)
+        intents.putExtras(b)
+        context.startActivity(intents)
+    }
+
     //the class is hodling the list view
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+
 
         fun bindItems(restaurant: Restaurant) {
             val textViewName = itemView.findViewById(R.id.restaurauntName) as TextView
             textViewName.text = restaurant.name
+
+            val ratingAmount = itemView.findViewById(R.id.rating) as RatingBar
+            ratingAmount.rating = restaurant.rating
+
+            val distanceAmount = itemView.findViewById(R.id.distance) as TextView
+            distanceAmount.text = "${restaurant.distance} km"
+
+
+            val dirButton = itemView.findViewById(R.id.dirButton) as FloatingActionButton
+            dirButton.setOnClickListener {
+                val uris =
+                    Uri.parse("https://www.google.com/maps/dir/?api=1&destination=${restaurant.location.latitude}, ${restaurant.location.longitude}&travelmode=walking")
+                val intents = Intent(Intent.ACTION_VIEW, uris)
+                val b = Bundle()
+                b.putBoolean("new_window", true)
+                intents.putExtras(b)
+                itemView.context.startActivity(intents)
+            }
         }
     }
 }

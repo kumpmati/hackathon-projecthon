@@ -97,11 +97,12 @@ object MainScenario: Scenario() {
 
 
         //Accept
-        state("Ok") { activators { regex(".*OK.*")}
+        state("Ok") { activators { regex(".*OK.*"); regex(".*thank.*")}
             action {allowedTypes.clear()
                 //MapsApi().query(this.request.input)
                 allowedTypes.addAll(allRestaurants)
-                reactions.say("Thank you") }
+                reactions.say("You are welcome") }
+
         }
         fallback { reactions.say("Sorry I didn't get that, Would you like something to eat?")}
     }

@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO),1)
             return
         }
 
@@ -119,12 +120,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //TODO tähän se parse funktio
-    fun parseDate(data:String){
+    private fun parseDate(data:String){
         println("Parsetaan: "+data)
     }
 
     //create aimybox object for voice recognition
-    fun createAimybox(context: Context): Aimybox {
+    private fun createAimybox(context: Context): Aimybox {
         val locale = Locale.ENGLISH
 
         val textToSpeech = GooglePlatformTextToSpeech(context, locale) // Or any other TTS

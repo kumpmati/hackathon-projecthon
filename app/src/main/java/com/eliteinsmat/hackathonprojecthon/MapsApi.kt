@@ -10,7 +10,7 @@ import kotlin.collections.ArrayList
 
 class MapsApi {
     companion object {
-        var location = LatLng(20.0, 30.0)
+        var location = LatLng(60.4, 23.5)
         private var juttu: BehaviorSubject<ArrayList<Restaurant>> = BehaviorSubject.create()
 
         fun getJuttuasd(): Observable<ArrayList<Restaurant>> {

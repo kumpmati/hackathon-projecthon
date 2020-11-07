@@ -15,20 +15,47 @@ object MainScenario: Scenario() {
             }
         }
 
-        state("FoodType") {
-            activators {
-                regex("chinese")
-                regex("indian")
-                regex("nearby")
-            }
+        val allRestaurants = arrayListOf<String>("Japanese", "Indian", "Hamburger","Chinese")
+        var allowedTypes = arrayListOf<String>("Japanese", "Indian", "Hamburger","Chinese")
 
-            action {
-                val results = MapsApi().query(this.request.input)
-                println(results)
-                reactions.say("Here are some chinese restaurants")
-            }
+        state("NoChinese") { activators { regex(".*Don't.*Chinese.*")}
+            action {allowedTypes.remove("Chinese")
+                reactions.say("How about $allowedTypes") }
+        }
+        state("NoIndian") { activators { regex(".*Don't.*Indian.*")}
+            action {allowedTypes.remove("Indian")
+                reactions.say("How about $allowedTypes") }
+        }
+        state("NoSushi") { activators { regex(".*Don't.*Sushi*")}
+            action {allowedTypes.remove("Japanese")
+                reactions.say("How about $allowedTypes") }
+        }
+
+        state("Chinese") { activators { regex(".*Chinese.*")}
+            action { reactions.say("Here are some chinese restaurants") }
+        }
+
+        state("Burger") { activators { regex(".*Burger.*")}
+            action { reactions.say("Here are some burger restaurants") }
+        }
+
+        state("Indian") { activators { regex(".*Indian.*")}
+            action { reactions.say("Here are some indian restaurants") }
+        }
+
+        state("Japanese") { activators { regex(".*Japanese.*")}
+            action { reactions.say("Here are some sushi restaurants") }
+        }
+
+        state("coffee") { activators { regex(".*Coffee.*")}
+            action { reactions.say("Here are some coffee shops") }
+        }
+
+        state("Ok") { activators { regex(".*OK.*")}
+            action {allowedTypes.clear()
+                MapsApi().query(this.request.input)
+                allowedTypes.addAll(allRestaurants)
+                reactions.say("Thank you") }
         }
     }
-
-
 }

@@ -24,17 +24,11 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.justai.aimybox.Aimybox
 import com.justai.aimybox.core.Config
-import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.dialogapi.jaicf.JAICFDialogApi
-import com.justai.aimybox.extensions.dialogApiEventsObservable
 import com.justai.aimybox.extensions.stateObservable
-import com.justai.aimybox.extensions.textToSpeechEventsObservable
-import com.justai.aimybox.extensions.voiceTriggerEventsObservable
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.isActive
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -65,7 +59,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         val relativeView = findViewById(R.id.relativeLayout) as RelativeLayout
 
         //Permission check for recording audio
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -73,18 +67,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
-            return
-        }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO, Manifest.permission.ACCESS_FINE_LOCATION), 1)
+
             return
         }
 
@@ -181,29 +165,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
         mMap.isMyLocationEnabled = true;
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                userLocation = location?.longitude?.let { LatLng(location?.latitude, it) }!!
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
-            }
+
 
     }
 

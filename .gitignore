@@ -84,6 +84,6 @@ lint/outputs/
 lint/tmp/
 # lint/reports/
 
-# API token
+# API tokens
 app/src/main/res/raw/*.json
-
+app/src/main/res/values/google_maps_api.xml

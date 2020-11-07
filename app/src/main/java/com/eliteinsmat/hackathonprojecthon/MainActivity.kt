@@ -27,10 +27,14 @@ import com.justai.aimybox.core.Config
 import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.dialogapi.jaicf.JAICFDialogApi
 import com.justai.aimybox.extensions.dialogApiEventsObservable
+import com.justai.aimybox.extensions.stateObservable
 import com.justai.aimybox.extensions.textToSpeechEventsObservable
+import com.justai.aimybox.extensions.voiceTriggerEventsObservable
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.isActive
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -38,6 +42,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var userLocation: LatLng
+    var ttsButtonState: Boolean = false;
 
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -77,16 +82,21 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
 
-        val button: FloatingActionButton = findViewById(R.id.floatingActionButton)
+        val button: FloatingActionButton = findViewById(R.id.ttsButton)
         button.setOnClickListener {
-            val restauraunts = ArrayList<Restaurant>()
+            if (ttsButtonState){
+                println("STUNTTI SEIS")
+                //todo: cancel tts here
+            } else {
 
-            restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563),1f, 2) );
-            restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563),2f, 12));
-            restauraunts.add(Restaurant("res3213",LatLng(60.2117671, 22.3342563),3f, 3));
-            restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233),4f, 15));
-            restauraunts.add(Restaurant("res35",LatLng(61.3217671, 22.2312563),4.5f, 91));
-            restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563),5f, 7));
+            val restauraunts = ArrayList<Restaurant>()
+                
+            restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563),1f, 2, "Jee") );
+            restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563),2f, 12,"Burgar"));
+            restauraunts.add(Restaurant("res3213",LatLng(60.2117671, 22.3342563),3f, 3, "RUM SHOPÅ "));
+            restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233),4f, 15, "SBUBBY"));
+            restauraunts.add(Restaurant("res35",LatLng(61.3217671, 22.2312563),4.5f, 91, "DonaldMac"));
+            restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563),5f, 7, "Alfred Ainstain"));
             val adapter = RestaurantAdapter(restauraunts)
 
             ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
@@ -99,30 +109,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             try {
                 tts.startRecognition()
             } catch (e:GooglePlatformSpeechToTextException){
-                tts.startRecognition()
             }
-
-            //shows query sent to dialogflow
-            var list = tts.dialogApiEventsObservable()
-            list.subscribe(
-                { value -> println("Received: $value") },      // onNext
-                { error -> println("Error: $error") },         // onError
-                { println("Completed") }                       // onComplete
-            )
-
-            //dialogflow response
-            var list2 = tts.textToSpeechEventsObservable()
-            list2.subscribe(
-                { value -> parseDate(value.toString()) },      // onNext
-                { error -> println("Error2: $error") },         // onError
-                { println("Completed2") }                       // onComplete
+            tts.stateObservable().subscribe(
+                { value ->
+                    if(value == Aimybox.State.LISTENING){
+                        setButtonState(true)
+                    } else {
+                        setButtonState(false)
+                    }
+                },
+                { error -> println("Error: $error") }        // onError
             )
             
             recyclerView.adapter = adapter
             addMarkers(restauraunts)
         }
 
-
+        }
     }
 
     //TODO tähän se parse funktio
@@ -150,6 +153,19 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
          mMap.addMarker(MarkerOptions().position(it.location).title(it.name))
         }
     }
+
+    fun setButtonState(state: Boolean){
+        val ttsButton = findViewById<FloatingActionButton>(R.id.ttsButton)
+        if (state){
+            ttsButtonState = true;
+            ttsButton.setImageResource(R.drawable.stop)
+        } else {
+            ttsButtonState = false;
+            ttsButton.setImageResource(R.drawable.mic)
+        }
+
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 

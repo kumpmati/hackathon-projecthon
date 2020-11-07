@@ -28,7 +28,6 @@ import com.justai.aimybox.dialogapi.jaicf.JAICFDialogApi
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
-import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -50,7 +49,12 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
 
+        MapsApi.getJuttuasd().subscribe({value ->
+            addMarkers(value)
+        }, { error -> println(error.message)})
 //UI
+
+
 
         //getting recyclerview from xml
         val recyclerView = findViewById(R.id.recycler) as RecyclerView
@@ -72,8 +76,6 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-
-
 
         val button: FloatingActionButton = findViewById(R.id.floatingActionButton)
         button.setOnClickListener {
@@ -107,10 +109,6 @@ open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    //TODO tähän se parse funktio
-    private fun parseDate(data:String){
-        println("Parsetaan: "+data)
-    }
 
     //create aimybox object for voice recognition
     private fun createAimybox(context: Context): Aimybox {

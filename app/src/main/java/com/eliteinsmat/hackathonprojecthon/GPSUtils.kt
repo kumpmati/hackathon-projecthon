@@ -43,37 +43,38 @@ class GPSUtils(context: Context) {
     fun turnOnGPS() {
         if (mLocationManager?.isProviderEnabled(LocationManager.GPS_PROVIDER) == false) {
             mSettingClient?.checkLocationSettings(mLocationSettingsRequest)
-                ?.addOnSuccessListener(mContext as Activity) {
-                    Log.d(TAG, "turnOnGPS: Already Enabled")
-                }
-                ?.addOnFailureListener { ex ->
-                    if ((ex as ApiException).statusCode
-                        == LocationSettingsStatusCodes.RESOLUTION_REQUIRED
-                    ) {
-                        try {
-                            val resolvableApiException = ex as ResolvableApiException
-                            resolvableApiException.startResolutionForResult(
-                                mContext as Activity,
-                                IConstant.DEFAULTS.GPS_CODE
-                            )
-                        } catch (e: Exception) {
-                            Log.d(TAG, "turnOnGPS: Unable to start default functionality of GPS")
-                        }
+            ?.addOnSuccessListener(mContext as Activity) {
+                Log.d(TAG, "turnOnGPS: Already Enabled")
 
-                    } else {
-                        if (ex.statusCode == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
-                            val errorMessage =
-                                "Location settings are inadequate, and cannot be " +
-                                        "fixed here. Fix in Settings."
-                            Log.e(TAG, errorMessage)
-                            Toast.makeText(
-                                mContext,
-                                errorMessage,
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+            }
+            ?.addOnFailureListener { ex ->
+                if ((ex as ApiException).statusCode
+                    == LocationSettingsStatusCodes.RESOLUTION_REQUIRED
+                ) {
+                    try {
+                        val resolvableApiException = ex as ResolvableApiException
+                        resolvableApiException.startResolutionForResult(
+                            mContext as Activity,
+                            IConstant.DEFAULTS.GPS_CODE
+                        )
+                    } catch (e: Exception) {
+                        Log.d(TAG, "turnOnGPS: Unable to start default functionality of GPS")
+                    }
+
+                } else {
+                    if (ex.statusCode == LocationSettingsStatusCodes.SETTINGS_CHANGE_UNAVAILABLE) {
+                        val errorMessage =
+                            "Location settings are inadequate, and cannot be " +
+                                    "fixed here. Fix in Settings."
+                        Log.e(TAG, errorMessage)
+                        Toast.makeText(
+                            mContext,
+                            errorMessage,
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 }
+            }
         }
     }
 

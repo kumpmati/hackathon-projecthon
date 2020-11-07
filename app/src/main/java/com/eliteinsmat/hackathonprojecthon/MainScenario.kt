@@ -31,20 +31,16 @@ object MainScenario: Scenario() {
                 reactions.say("How about $allowedTypes") }
         }
 
-        state("Chinese") { activators { regex(".*Chinese.*")}
-            action { reactions.say("Here are some chinese restaurants") }
+        state("Chinese") { activators {
+            regex(".*Chinese.*")
+            regex(".*Burger.*")
+            regex(".*Indian.*")
+            regex(".*Japanese.*")
         }
-
-        state("Burger") { activators { regex(".*Burger.*")}
-            action { reactions.say("Here are some burger restaurants") }
-        }
-
-        state("Indian") { activators { regex(".*Indian.*")}
-            action { reactions.say("Here are some indian restaurants") }
-        }
-
-        state("Japanese") { activators { regex(".*Japanese.*")}
-            action { reactions.say("Here are some sushi restaurants") }
+            action {
+                MapsApi().query(this.request.input)
+                reactions.say("Here are some ${this.request.input} restaurants")
+            }
         }
 
         state("coffee") { activators { regex(".*Coffee.*")}

@@ -21,6 +21,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.justai.aimybox.Aimybox
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var userLocation: LatLng
     var ttsButtonState: Boolean = false
     private val restaurants = ArrayList<Restaurant>();
+    private val markers = ArrayList<Marker>();
 
     @SuppressLint("WrongConstant", "CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -69,13 +71,23 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
         fun updateRestaurants(value: ArrayList<Restaurant>){
             this@MainActivity.runOnUiThread(java.lang.Runnable {
+                addMarkers(restaurants)
                 restaurants.clear()
                 restaurants.addAll(value)
 
                 val adapter = RestaurantAdapter(restaurants)
                 recyclerView.adapter = adapter
+
+                //deleting old markers
+                clearMarkers();
+
                 addMarkers(restaurants)
                 recyclerView.invalidate();
+
+                ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
+                    duration = 220
+                    start();
+                }
             })
         }
 
@@ -112,10 +124,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 tts.mute()
             } else {
                 tts.unmute()
-                ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
-                    duration = 220
-                    start();
-                }
 
                 //Start voice recognition
                 //ignore possible exception
@@ -159,9 +167,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
     fun addMarkers(locations: ArrayList<Restaurant>){
         locations.forEach {
-            println(it.name)
-         mMap.addMarker(MarkerOptions().position(it.location).title(it.name))
+         markers.add(mMap.addMarker(MarkerOptions().position(it.location).title(it.name)))
         }
+    }
+
+    fun clearMarkers(){
+        markers.forEach {
+            it.remove();
+        }
+        markers.clear();
     }
 
     fun setButtonState(state: Boolean){

@@ -37,14 +37,15 @@
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:translationY="220dp"
+        android:layout_height="400dp"
+        android:translationY="320dp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="30dp"
             android:background="@color/purple_700"
             android:fadeScrollbars="false"

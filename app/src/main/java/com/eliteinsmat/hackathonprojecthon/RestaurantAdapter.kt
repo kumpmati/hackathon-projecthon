@@ -58,7 +58,7 @@ class RestaurantAdapter(val RestaurantList: ArrayList<Restaurant>) : RecyclerVie
             ratingAmount.rating = restaurant.rating
 
             val distanceAmount = itemView.findViewById(R.id.distance) as TextView
-            distanceAmount.text = "${restaurant.distance} km"
+            distanceAmount.text = "${restaurant.type} ⬩ ${restaurant.distance} km"
 
 
             val dirButton = itemView.findViewById(R.id.dirButton) as FloatingActionButton

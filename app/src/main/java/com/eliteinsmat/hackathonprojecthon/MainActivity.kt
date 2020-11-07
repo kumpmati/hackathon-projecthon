@@ -55,9 +55,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
-                userLocation = location?.longitude?.let { LatLng(location?.latitude, it) }!!
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
-                MapsApi.setNewLocation(userLocation)
+                try {
+                    userLocation = location?.longitude?.let { LatLng(location?.latitude, it) }!!
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                    MapsApi.setNewLocation(userLocation)
+                }
+catch (e:Exception){
+    println(e)
+}
+
             }
 //UI
 

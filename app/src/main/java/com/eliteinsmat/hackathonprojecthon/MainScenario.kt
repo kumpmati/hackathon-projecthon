@@ -37,6 +37,10 @@ object MainScenario: Scenario() {
             action {allowedTypes.remove("Kebab")
                 reactions.say("How about $allowedTypes") }
         }
+        state("NoBurger") { activators { regex(".*Don't.*Burger")}
+            action {allowedTypes.remove("Hanmburger")
+                reactions.say("How about $allowedTypes") }
+        }
 
         //Choose types
         state("Chinese") { activators { regex(".*Chinese.*") }
@@ -69,6 +73,12 @@ object MainScenario: Scenario() {
                 reactions.say("Here are some Indian restaurants")
             }
         }
+        state("Burger") { activators { regex(".*Burger.*") }
+            action {
+                MapsApi().query("Burger")
+                reactions.say("Here are some Burger restaurants")
+            }
+        }
         state("coffee") { activators { regex(".*Coffee.*")}
             action {
                 MapsApi().query("Coffee")
@@ -77,9 +87,14 @@ object MainScenario: Scenario() {
 
         state("What"){activators { regex(".*What.*")
             action { reactions.say("I have $allRestaurants restaurants") }}}
+
         //Ansver yes to fallback
         state("Yes"){activators { regex(".*Yes.*")
         action { reactions.say("What would you like?") }}}
+
+        state("Who"){activators { regex(".*Who.*")
+            action { reactions.say("I am a conversational AI made for junction 2020 just AI and aito challenges. My primary function is to find places to eat") }}}
+
 
         //Accept
         state("Ok") { activators { regex(".*OK.*")}

@@ -24,26 +24,24 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.justai.aimybox.Aimybox
 import com.justai.aimybox.core.Config
-import com.justai.aimybox.dialogapi.dialogflow.DialogflowDialogApi
 import com.justai.aimybox.dialogapi.jaicf.JAICFDialogApi
-import com.justai.aimybox.extensions.dialogApiEventsObservable
-import com.justai.aimybox.extensions.textToSpeechEventsObservable
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToText
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformSpeechToTextException
 import com.justai.aimybox.speechkit.google.platform.GooglePlatformTextToSpeech
+import java.net.URL
 import java.util.*
 import kotlin.collections.ArrayList
 
-class MainActivity : AppCompatActivity(), OnMapReadyCallback {
+open class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var userLocation: LatLng
+    lateinit var fusedLocationClient: FusedLocationProviderClient
+    lateinit var userLocation: LatLng
 
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val tts = createAimybox(applicationContext);
+        val tts = createAimybox(applicationContext)
 
         //maps
         val mapFragment = supportFragmentManager
@@ -101,22 +99,6 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             } catch (e:GooglePlatformSpeechToTextException){
                 tts.startRecognition()
             }
-
-            //shows query sent to dialogflow
-            var list = tts.dialogApiEventsObservable()
-            list.subscribe(
-                { value -> println("Received: $value") },      // onNext
-                { error -> println("Error: $error") },         // onError
-                { println("Completed") }                       // onComplete
-            )
-
-            //dialogflow response
-            var list2 = tts.textToSpeechEventsObservable()
-            list2.subscribe(
-                { value -> parseDate(value.toString()) },      // onNext
-                { error -> println("Error2: $error") },         // onError
-                { println("Completed2") }                       // onComplete
-            )
             
             recyclerView.adapter = adapter
             addMarkers(restauraunts)
@@ -144,6 +126,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         return Aimybox(config)
     }
 
+
     fun addMarkers(locations: ArrayList<Restaurant>){
         locations.forEach {
             println(it.name)
@@ -161,6 +144,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
+            println("-ei permissionia-----")
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -175,8 +159,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             .addOnSuccessListener { location : Location? ->
                 userLocation = location?.longitude?.let { LatLng(location?.latitude, it) }!!
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
+                MapsApi.setNewLocation(userLocation)
             }
-
     }
 
 }

@@ -14,12 +14,20 @@ object MainScenario: Scenario() {
                 reactions.sayRandom("What would you like to eat?")
             }
         }
+
         state("FoodType") {
-            activators { regex("chinese") }
+            activators {
+                regex("chinese")
+                regex("nearby")
+            }
 
             action {
+                val results = MapsApi().query(this.request.input)
+                println(results)
                 reactions.say("Here are some chinese restaurants")
             }
         }
     }
+
+
 }

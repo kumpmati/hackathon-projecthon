@@ -5,7 +5,6 @@ import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
-import android.location.Location
 import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -15,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -36,19 +34,22 @@ import kotlin.collections.ArrayList
 class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var mMap: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var userLocation: LatLng
 
     @SuppressLint("WrongConstant")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         val tts = createAimybox(applicationContext);
+        GPSUtils(this).turnOnGPS()
 
         //maps
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+
+
 
 
 //UI
@@ -66,11 +67,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO),1)
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.RECORD_AUDIO), 1)
             return
         }
 
 
+
+        tts.sendRequest("type: chinese food, location: [-60.4, 23.5]")
         //adding a layoutmanager
         recyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
 
@@ -80,12 +83,12 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         button.setOnClickListener {
             val restauraunts = ArrayList<Restaurant>()
 
-            restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563),1f, 2) );
-            restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563),2f, 12));
-            restauraunts.add(Restaurant("res3213",LatLng(60.2117671, 22.3342563),3f, 3));
-            restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233),4f, 15));
-            restauraunts.add(Restaurant("res35",LatLng(61.3217671, 22.2312563),4.5f, 91));
-            restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563),5f, 7));
+            restauraunts.add(Restaurant("res1", LatLng(61.4417671, 22.2842563), 1f, 2));
+            restauraunts.add(Restaurant("resdsas2", LatLng(60.4312671, 21.2842563), 2f, 12));
+            restauraunts.add(Restaurant("res3213", LatLng(60.2117671, 22.3342563), 3f, 3));
+            restauraunts.add(Restaurant("reasds4", LatLng(60.3537671, 22.2841233), 4f, 15));
+            restauraunts.add(Restaurant("res35", LatLng(61.3217671, 22.2312563), 4.5f, 91));
+            restauraunts.add(Restaurant("res2333316", LatLng(69.4417671, 24.2042563), 5f, 7));
             val adapter = RestaurantAdapter(restauraunts)
 
             ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
@@ -95,11 +98,15 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
 
             //Start voice recognition
             //ignore possible exception
+
+
             try {
                 tts.startRecognition()
-            } catch (e:GooglePlatformSpeechToTextException){
+            } catch (e: GooglePlatformSpeechToTextException){
                 tts.startRecognition()
             }
+
+
 
             //shows query sent to dialogflow
             var list = tts.dialogApiEventsObservable()
@@ -125,8 +132,8 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     //TODO tähän se parse funktio
-    private fun parseDate(data:String){
-        println("Parsetaan: "+data)
+    private fun parseDate(data: String){
+        println("Parsetaan: " + data)
     }
 
     //create aimybox object for voice recognition
@@ -148,6 +155,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
          mMap.addMarker(MarkerOptions().position(it.location).title(it.name))
         }
     }
+
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
@@ -169,12 +177,9 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
         mMap.isMyLocationEnabled = true;
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location : Location? ->
-                userLocation = location?.longitude?.let { LatLng(location?.latitude, it) }!!
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
-            }
+
 
     }
 
 }
+

@@ -1,4 +1,4 @@
-package com.eliteinsmat.hackathonprojecthon
+package com.eliteinsmat.snacktrace
 
 import com.google.android.gms.maps.model.LatLng
 

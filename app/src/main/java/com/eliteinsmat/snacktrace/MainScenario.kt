@@ -1,4 +1,4 @@
-package com.eliteinsmat.hackathonprojecthon
+package com.eliteinsmat.snacktrace
 
 import com.justai.jaicf.model.scenario.Scenario
 

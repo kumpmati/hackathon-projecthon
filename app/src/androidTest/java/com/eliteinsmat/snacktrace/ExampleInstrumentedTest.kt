@@ -1,4 +1,4 @@
-package com.eliteinsmat.hackathonprojecthon
+package com.eliteinsmat.snacktrace
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

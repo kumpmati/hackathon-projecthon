@@ -1,4 +1,4 @@
-package com.eliteinsmat.hackathonprojecthon
+package com.eliteinsmat.snacktrace
 
 import android.content.Context
 import android.content.Intent
@@ -10,10 +10,7 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import io.reactivex.subjects.BehaviorSubject

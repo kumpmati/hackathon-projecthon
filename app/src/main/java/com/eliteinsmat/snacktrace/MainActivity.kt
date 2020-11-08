@@ -1,4 +1,4 @@
-package com.eliteinsmat.hackathonprojecthon
+package com.eliteinsmat.snacktrace
 
 import android.Manifest
 import android.animation.ObjectAnimator
@@ -7,8 +7,6 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 try {
-                    userLocation = location?.longitude?.let { LatLng(location?.latitude, it) }!!
+                    userLocation = location?.longitude?.let { LatLng(location.latitude, it) }!!
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 15f))
                     MapsApi.setNewLocation(userLocation)
                 }
@@ -68,8 +66,8 @@ catch (e:Exception){
 //UI
 
         //getting recyclerview from xml
-        val recyclerView = findViewById(R.id.recycler) as RecyclerView
-        val relativeView = findViewById(R.id.relativeLayout) as RelativeLayout
+        val recyclerView = findViewById<RecyclerView>(R.id.recycler)
+        val relativeView = findViewById<RelativeLayout>(R.id.relativeLayout)
 
 
 
@@ -91,13 +89,12 @@ catch (e:Exception){
 
                 ObjectAnimator.ofFloat(relativeView, "translationY", 15f).apply {
                     duration = 3
-                    20
                     start();
                 }
             })
         }
 
-        val b = RestaurantAdapter.ViewHolder.getRestaurantBS().subscribe(
+        RestaurantAdapter.ViewHolder.getRestaurantBS().subscribe(
             {value ->
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(value, 15f))
             },
@@ -124,7 +121,7 @@ catch (e:Exception){
 
         val button: FloatingActionButton = findViewById(R.id.ttsButton)
 
-        val a = MapsApi.getJuttuasd().subscribe(
+        MapsApi.getJuttuasd().subscribe(
             {value -> updateRestaurants(value)
             },
             {error -> println(error)}
